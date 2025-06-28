@@ -32,6 +32,7 @@ def main():
         label = customtkinter.CTkLabel(contentFrame, text=betrag)
         label.pack(pady=12, padx=12)
         print("funktioniert")
+        print("test")
 
         
 
