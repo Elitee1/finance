@@ -1,60 +1,41 @@
-import customtkinter 
-import pandas as pd 
+# main.py
+import customtkinter
+import pandas as pd
 
-datei = pd.read_csv("files/ausgaben.csv")
+class FinanceApp:
+    def __init__(self):
+        self.datei = pd.read_csv("files/ausgaben.csv")
+        self.app = customtkinter.CTk()
+        self.app.geometry("800x600")
+        self.app.title("Finance")
 
+        self.kategorieFrame = customtkinter.CTkFrame(self.app, width=200)
+        self.kategorieFrame.pack(side="left", fill="y", padx=12, pady=12)
 
-def main():
-    
-    app = customtkinter.CTk()
-    
+        self.contentFrame = customtkinter.CTkFrame(self.app)
+        self.contentFrame.pack(side="right", expand=True, fill="both", padx=12, pady=12)
 
-    kategorieFrame = customtkinter.CTkFrame(app, width=300, height=600)
-    kategorieFrame.pack(side="left", pady=12, padx=12, )
+        self.build_buttons()
 
-    contentFrame = customtkinter.CTkFrame(app)
-    contentFrame.pack(side="right", expand=True, fill="both", pady=12, padx=12)
+    def build_buttons(self):
+        for kategorie, betrag in zip(self.datei["Kategorie"], self.datei["Betrag"]):
+            btn = customtkinter.CTkButton(
+                self.kategorieFrame,
+                text=kategorie,
+                command=lambda b=betrag: self.show_amount(b)
+            )
+            btn.pack(pady=6, fill="x")
 
+    def show_amount(self, betrag):
+        for widget in self.contentFrame.winfo_children():
+            widget.destroy()
+        label = customtkinter.CTkLabel(self.contentFrame, text=f"{betrag} €")
+        label.pack(pady=20)
 
-    app.geometry("600x600")
-    app._set_appearance_mode("System")
-    app.title("finance")
+    def run(self):
+        self.app.mainloop()
 
-
-    kategoroieFrames = []
-    kategorieButtons = []
-
-    def frameSpawn( betrag):   
-
-        for frame in contentFrame.winfo_children():
-            frame.destroy()
-        
-        label = customtkinter.CTkLabel(contentFrame, text=betrag)
-        label.pack(pady=12, padx=12)
-        print("funktioniert")
-        print("test")
-
-        
-
-
-    for index, (kategorie, betrag) in enumerate(zip(datei["Kategorie"], datei["Betrag"])): 
-
-        
-        frames = customtkinter.CTkFrame(app, width=400, height=600 )
-        kategoroieFrames.append(frames)
-        
-        
-        button = customtkinter.CTkButton(kategorieFrame ,text=kategorie, command= lambda b = betrag: frameSpawn( b ))
-        button.pack(pady = 12, padx =12 )
-        kategorieButtons.append(button)
-    
- 
-
-
-
-        
-
-    app.mainloop()
-
-if __name__ == "__main__": 
-    main()
+# main.py direkt ausführbar machen
+if __name__ == "__main__":
+    app = FinanceApp()
+    app.run()
