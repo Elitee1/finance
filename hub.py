@@ -1,8 +1,16 @@
-from main import FinanceApp
 import customtkinter
+import pandas as pd 
+from main import main, contentFrame, app
 
-app_instance = FinanceApp()
 
-customtkinter.CTkButton(app_instance.contentFrame, text="Ausgaben 20.01.2025", command=lambda: app_instance.show_amount(100)).pack()
 
-app_instance.run()
+
+
+buttonAusgabeMonat = customtkinter.CTkButton(contentFrame, text= "Ausgaben 20.01.2025", command=main)
+buttonAusgabeMonat.pack(pady=12, padx=12, )
+
+
+app.mainloop()
+
+
+
